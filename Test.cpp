@@ -46,9 +46,6 @@ TEST_CASE("Good NumberWithUnits code") {
     sample_input2 >> a;
 
     CHECK(a == b);
-
-
-    
 }
 
 TEST_CASE("Bad NumberWithUnits code") {
@@ -58,6 +55,7 @@ TEST_CASE("Bad NumberWithUnits code") {
     NumberWithUnits a(2, "hour");
     NumberWithUnits b(2, "kg");
     NumberWithUnits c;
+    NumberWithUnits d(2, "kk");
     
     CHECK_FALSE(a == b);
     CHECK_FALSE(a == c);
@@ -65,11 +63,10 @@ TEST_CASE("Bad NumberWithUnits code") {
     CHECK_THROWS(a + b);
     CHECK_THROWS(a += b);
     CHECK_THROWS(a - b);
-    CHECK_THROWS(a -= b);
-    
-    // CHECK_THROWS(a == c + a);
+    CHECK_THROWS(b -= d);
 
-   
+    CHECK_THROWS(d - 2);
+    
    
 
 }

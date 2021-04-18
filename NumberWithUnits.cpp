@@ -22,14 +22,24 @@ namespace ariel{
                 double tmp1 = b*t.second;
                 compares[type1][t.first] = tmp1;
                 compares[t.first][type1] = 1/tmp1;
-                }
+            }
             for (auto& t:compares[type1]){
                 double tmp2 = (1/b)*t.second;
                 compares[type2][t.first] = tmp2;
                 compares[t.first][type2] = 1/tmp2;
-                }
             }
         }
+    }
+
+    bool NumberWithUnits::is_exist(const NumberWithUnits& a){
+    bool flag = false;
+    for (auto& t:compares[a.des]){
+                if(a.des == t.first){
+                    flag = true;
+                }
+            }
+    return flag;
+    }
 
     bool NumberWithUnits::have_connection(const NumberWithUnits& a, const NumberWithUnits& b){
         if(a.des == ""){
@@ -61,9 +71,15 @@ namespace ariel{
     }
 
     NumberWithUnits operator-(const NumberWithUnits& a){
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
         return NumberWithUnits (-a.unit, a.des);
     }
     NumberWithUnits operator+(const NumberWithUnits& a){
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
         return NumberWithUnits (a.unit, a.des);
     }
 
@@ -84,10 +100,16 @@ namespace ariel{
     }
 
     NumberWithUnits operator+(const NumberWithUnits& a, double n){
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
         return NumberWithUnits (a.unit + n, a.des);   
     }
 
     NumberWithUnits operator-(const NumberWithUnits& a, double n){
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
         return NumberWithUnits (a.unit - n, a.des);   
     }
 
@@ -110,35 +132,59 @@ namespace ariel{
     }
 
     NumberWithUnits operator++(NumberWithUnits& a){
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
         return NumberWithUnits (++a.unit, a.des);
     }
 
     NumberWithUnits operator++(NumberWithUnits& a, int){
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
         return NumberWithUnits (a.unit++, a.des);
     }
     
     NumberWithUnits operator--(NumberWithUnits& a){
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
          return NumberWithUnits (--a.unit, a.des);
     }
 
     NumberWithUnits operator--(NumberWithUnits& a, int){
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
          return NumberWithUnits (a.unit--, a.des);
     }
 
     NumberWithUnits operator*(NumberWithUnits& a, double n){
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
         return NumberWithUnits (a.unit * n, a.des);
     }
 
     NumberWithUnits operator*(double n, NumberWithUnits& a){
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
         return NumberWithUnits (n * a.unit, a.des);
     }
 
     NumberWithUnits operator*=(NumberWithUnits& a, double n){
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
         a.unit *= n;
         return a;
     }
 
     NumberWithUnits operator*=(double n, NumberWithUnits& a){
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
         a.unit *= n;
         return a;
     }
@@ -180,14 +226,20 @@ namespace ariel{
     }
 
      istream& operator>>(istream& is, NumberWithUnits& a){
+         if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
         string s;
         is >> a.unit >> s >> a.des;
         return is;
     }
 
     
-    ostream& operator<< (ostream& os, const NumberWithUnits& n) {
-        return (os << n.unit << '['<< n.des << ']');
+    ostream& operator<< (ostream& os, const NumberWithUnits& a) {
+        if(!NumberWithUnits::is_exist(a)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
+        return (os << a.unit << '['<< a.des << ']');
     }
 
 }

@@ -49,7 +49,7 @@ namespace ariel{
 
     bool operator==(const NumberWithUnits& a, const NumberWithUnits& b) {
         if(!(NumberWithUnits::have_connection(a,b))){
-            cout<<"illegle values"<<endl;
+            cout<<"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"<<endl;
             return false;
         }
         double convert = NumberWithUnits::convertor(a,b);
@@ -77,7 +77,7 @@ namespace ariel{
 
     NumberWithUnits operator-(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
+            throw("Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]");
         }
         double convert = NumberWithUnits::convertor(a,b);
         return NumberWithUnits (a.unit - convert, a.des);   
@@ -93,7 +93,7 @@ namespace ariel{
 
     NumberWithUnits operator+=(NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
+            throw("Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]");
         }
         double convert = NumberWithUnits::convertor(a,b);
         a.unit = (a.unit + convert);
@@ -102,7 +102,7 @@ namespace ariel{
 
     NumberWithUnits operator-=(NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
+            throw("Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]");
         }
         double convert = NumberWithUnits::convertor(a,b);
         a.unit = (a.unit - convert);
@@ -145,7 +145,7 @@ namespace ariel{
 
     bool operator>(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            cout<<"illegle values"<<endl;
+            cout<<"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"<<endl;
             return false;
         }
         double convert = NumberWithUnits::convertor(a,b);
@@ -154,7 +154,7 @@ namespace ariel{
 
     bool operator>=(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            cout<<"illegle values"<<endl;
+            cout<<"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"<<endl;
             return false;
         }
         double convert = NumberWithUnits::convertor(a,b);
@@ -163,7 +163,7 @@ namespace ariel{
 
     bool operator<(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            cout<<"illegle values"<<endl;
+            cout<<"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"<<endl;
             return false;
         }
         double convert = NumberWithUnits::convertor(a,b);
@@ -172,7 +172,7 @@ namespace ariel{
     
     bool operator<=(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            cout<<"illegle values"<<endl;
+            cout<<"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"<<endl;
             return false;
         }
         double convert = NumberWithUnits::convertor(a,b);

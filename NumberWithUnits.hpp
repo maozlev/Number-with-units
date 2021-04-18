@@ -19,6 +19,10 @@ namespace ariel{
                 this->unit = a;
                 this->des = s; 
             }
+            NumberWithUnits(){
+                this->unit = 0;
+                this->des = ""; 
+            }
 
             ~NumberWithUnits(){}
 
@@ -67,7 +71,7 @@ namespace ariel{
             // input output ********************************************************
 
             friend std::ostream& operator<< (std::ostream& os, const NumberWithUnits& a);
-            friend std::istream& operator>> (std::istream& is, const NumberWithUnits& a);
+            friend std::istream& operator>> (std::istream& is,  NumberWithUnits& a);
 
             // added functions
 
@@ -79,6 +83,7 @@ namespace ariel{
             }
 
             static bool have_connection(const NumberWithUnits& a, const NumberWithUnits& b);
+            static double convertor(const NumberWithUnits& a, const NumberWithUnits& b);
 
     };
 };

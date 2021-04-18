@@ -32,21 +32,30 @@ namespace ariel{
         }
 
     bool NumberWithUnits::have_connection(const NumberWithUnits& a, const NumberWithUnits& b){
-        double val = compares[a.des][b.des];
-        if(val == 0){
+        if(a.des == ""){
             return false;
+        }
+        if(b.des != ""){
+            double val = compares[a.des][b.des];
+            if(val == 0){
+                return false;
+            }
         }
         return true;
     }
+    double NumberWithUnits::convertor(const NumberWithUnits& a, const NumberWithUnits& b){
+       return b.unit * compares[b.des][a.des];
+    } 
 
     bool operator==(const NumberWithUnits& a, const NumberWithUnits& b) {
         if(!(NumberWithUnits::have_connection(a,b))){
-            throw("illegle values");
+            cout<<"illegle values"<<endl;
+            return false;
         }
-        double convert = b.unit * compares[b.des][a.des];
+        double convert = NumberWithUnits::convertor(a,b);
         return (a.unit- convert == 0);   
     }
-    
+
     bool operator!=(const NumberWithUnits& a, const NumberWithUnits& b) {
         return (!(a==b));
     }
@@ -60,17 +69,17 @@ namespace ariel{
 
     NumberWithUnits operator+(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            throw("illegle values");
-        }
-        double convert = b.unit * compares[b.des][a.des];
+            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
+            }
+        double convert = NumberWithUnits::convertor(a,b);
         return NumberWithUnits (a.unit + convert, a.des);   
     }
 
     NumberWithUnits operator-(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            throw("illegle values");
+            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
         }
-        double convert = b.unit * compares[b.des][a.des];
+        double convert = NumberWithUnits::convertor(a,b);
         return NumberWithUnits (a.unit - convert, a.des);   
     }
 
@@ -84,18 +93,18 @@ namespace ariel{
 
     NumberWithUnits operator+=(NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            throw("illegle values");
+            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
         }
-        double convert = b.unit * compares[b.des][a.des];
+        double convert = NumberWithUnits::convertor(a,b);
         a.unit = (a.unit + convert);
         return a;
     }
 
     NumberWithUnits operator-=(NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            throw("illegle values");
+            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
         }
-        double convert = b.unit * compares[b.des][a.des];
+        double convert = NumberWithUnits::convertor(a,b);
         a.unit = (a.unit - convert);
         return a;
     }
@@ -136,42 +145,47 @@ namespace ariel{
 
     bool operator>(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            throw("illegle values");
+            cout<<"illegle values"<<endl;
+            return false;
         }
-        double convert = b.unit * compares[b.des][a.des];
+        double convert = NumberWithUnits::convertor(a,b);
         return (a.unit-convert>0);
     }
 
     bool operator>=(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            throw("illegle values");
+            cout<<"illegle values"<<endl;
+            return false;
         }
-        double convert = b.unit * compares[b.des][a.des];
+        double convert = NumberWithUnits::convertor(a,b);
         return (a.unit-convert>=0);
     }
 
     bool operator<(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            throw("illegle values");
+            cout<<"illegle values"<<endl;
+            return false;
         }
-        double convert = b.unit * compares[b.des][a.des];
+        double convert = NumberWithUnits::convertor(a,b);
         return (a.unit-convert<0);
     }    
     
     bool operator<=(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            throw("illegle values");
+            cout<<"illegle values"<<endl;
+            return false;
         }
-        double convert = b.unit * compares[b.des][a.des];
+        double convert = NumberWithUnits::convertor(a,b);
         return (a.unit-convert<=0);
     }
 
-    istream& operator>> (istream& is, const NumberWithUnits& a){
+     istream& operator>>(istream& is, NumberWithUnits& a){
         string s;
-        NumberWithUnits b = a;
-        is >> b.unit >> s >> b.des;
+        is >> a.unit >> s >> a.des;
         return is;
     }
+
+    
     ostream& operator<< (ostream& os, const NumberWithUnits& n) {
         return (os << n.unit << '['<< n.des << ']');
     }

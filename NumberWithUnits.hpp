@@ -85,6 +85,7 @@ namespace ariel{
             static bool is_exist(const NumberWithUnits& a);
             static bool have_connection(const NumberWithUnits& a, const NumberWithUnits& b);
             static double convertor(const NumberWithUnits& a, const NumberWithUnits& b);
+            static void print_table();
 
     };
 };

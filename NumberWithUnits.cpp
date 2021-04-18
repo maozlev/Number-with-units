@@ -242,4 +242,16 @@ namespace ariel{
         return (os << a.unit << '['<< a.des << ']');
     }
 
+    void NumberWithUnits::print_table(){
+        for( auto const & cit : compares ) {
+            cout <<" | "<< cit.first <<"  "<<"  "<< " | "<<endl;
+            auto const & imap = cit.second;
+            for( auto const & cit2 : imap ) {
+                cout <<" | "<< cit2.first <<" = "<< cit2.second <<"|"<<endl;
+            }
+            cout << endl;
+        }
+    }
 }
+
+

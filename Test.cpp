@@ -1,16 +1,17 @@
-#include "doctest.h"
-#include "NumberWithUnits.hpp"
-using namespace ariel;
-
 #include <string>
 #include <iostream>
 #include <algorithm>
 #include <fstream>
 #include <sstream>
 #include <stdexcept>
+
+#include "doctest.h"
+#include "NumberWithUnits.hpp"
 using namespace std;
+using namespace ariel;
 
 ifstream units_file{"units.txt"};
+
 
 TEST_CASE("Good NumberWithUnits code") {
     NumberWithUnits::read_units(units_file);
@@ -19,14 +20,10 @@ TEST_CASE("Good NumberWithUnits code") {
     NumberWithUnits a(2, "km");
     NumberWithUnits b(2500, "m");
     NumberWithUnits c(2, "cm");
-    NumberWithUnits d;
     
-    CHECK(a == a + d);
     CHECK(a == a);
     CHECK(a != b);
-    CHECK(a == b-500);
     CHECK(a == c*100000);
-    CHECK(a == c+199998);
     CHECK(a < b);
     CHECK(b > c);
     CHECK(a <= b);
@@ -34,8 +31,11 @@ TEST_CASE("Good NumberWithUnits code") {
     CHECK(a >= a);
     CHECK(b >= a);
 
-    CHECK(a + b == b + a);
-    CHECK(a + 0.5 == b);
+    NumberWithUnits e = (a + c);
+    NumberWithUnits f = (c + a);
+    
+    CHECK((a+c) == (c+a));
+    CHECK_FALSE((a + c) == b);
 
     istringstream sample_input1{"700 [ kg ]"};
     sample_input1 >> a;
@@ -46,6 +46,13 @@ TEST_CASE("Good NumberWithUnits code") {
     sample_input2 >> a;
 
     CHECK(a == b);
+
+    ostringstream sample_output3;
+    sample_output3 << a;
+
+    istringstream sample_input4{sample_output3.str()};
+    sample_input4 >> b;
+    CHECK(a == b);
 }
 
 TEST_CASE("Bad NumberWithUnits code") {
@@ -54,18 +61,20 @@ TEST_CASE("Bad NumberWithUnits code") {
     
     NumberWithUnits a(2, "hour");
     NumberWithUnits b(2, "kg");
-    NumberWithUnits c;
+    NumberWithUnits c(2, "USD");;
     NumberWithUnits d(2, "kk");
-    
-    CHECK_FALSE(a == b);
-    CHECK_FALSE(a == c);
+    bool flag;
+    CHECK_THROWS(flag = (a == b));
+    CHECK_THROWS(flag = (a == c));
+    CHECK_THROWS(flag = (a < b));
+    CHECK_THROWS(flag = (a <= c));
+    CHECK_THROWS(flag = (a > b));
+    CHECK_THROWS(flag = (a >= c));
 
     CHECK_THROWS(a + b);
     CHECK_THROWS(a += b);
     CHECK_THROWS(a - b);
     CHECK_THROWS(b -= d);
-
-    CHECK_THROWS(d - 2);
     
    
 

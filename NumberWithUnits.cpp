@@ -32,41 +32,48 @@ namespace ariel{
     }
 
     bool NumberWithUnits::is_exist(const NumberWithUnits& a){
-    bool flag = false;
-    for (auto& t:compares[a.des]){
+        bool flag = false;
+        for (auto& t:compares[a.des]){
                 if(a.des == t.first){
                     flag = true;
                 }
-            }
-    return flag;
+        }
+        return flag;
     }
 
     bool NumberWithUnits::have_connection(const NumberWithUnits& a, const NumberWithUnits& b){
-        if(a.des == ""){
-            return false;
+        bool flag = false;
+        for (auto t:compares[a.des]){
+                if(b.des == t.first){
+                    flag = true;
+                }
         }
-        if(b.des != ""){
-            double val = compares[a.des][b.des];
-            if(val == 0){
-                return false;
-            }
+        for (auto t:compares[b.des]){
+            // cout<<t.first<<endl;
+                if(a.des == t.first){
+                    flag = true;
+                }
         }
-        return true;
+    return flag;
     }
     double NumberWithUnits::convertor(const NumberWithUnits& a, const NumberWithUnits& b){
        return b.unit * compares[b.des][a.des];
     } 
 
     bool operator==(const NumberWithUnits& a, const NumberWithUnits& b) {
+        // cout<<(NumberWithUnits::have_connection(a,b))<<endl;
         if(!(NumberWithUnits::have_connection(a,b))){
-            cout<<"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"<<endl;
+            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
             return false;
         }
         double convert = NumberWithUnits::convertor(a,b);
-        return (a.unit- convert == 0);   
+        // cout<<(a.unit - convert)<<endl;
+        return ((a.unit - convert) < 0.0001 && (a.unit - convert)> (-0.0001));   
     }
 
     bool operator!=(const NumberWithUnits& a, const NumberWithUnits& b) {
+        // cout<<(!(a==b))<<endl;
+        // cout<<((a==b))<<endl;
         return (!(a==b));
     }
 
@@ -88,6 +95,7 @@ namespace ariel{
             throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
             }
         double convert = NumberWithUnits::convertor(a,b);
+
         return NumberWithUnits (a.unit + convert, a.des);   
     }
 
@@ -191,7 +199,7 @@ namespace ariel{
 
     bool operator>(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            cout<<"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"<<endl;
+            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
             return false;
         }
         double convert = NumberWithUnits::convertor(a,b);
@@ -200,7 +208,7 @@ namespace ariel{
 
     bool operator>=(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            cout<<"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"<<endl;
+            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
             return false;
         }
         double convert = NumberWithUnits::convertor(a,b);
@@ -209,7 +217,7 @@ namespace ariel{
 
     bool operator<(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            cout<<"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"<<endl;
+            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
             return false;
         }
         double convert = NumberWithUnits::convertor(a,b);
@@ -218,7 +226,7 @@ namespace ariel{
     
     bool operator<=(const NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
-            cout<<"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"<<endl;
+            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
             return false;
         }
         double convert = NumberWithUnits::convertor(a,b);

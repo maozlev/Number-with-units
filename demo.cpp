@@ -53,7 +53,7 @@ int i_equal_9(){
 int i_equal_8(){
     std::cout << BOLDRED << "Oh NO Darth Vader wants to destroy our ship !!!!" << RESET << std::endl;
     printf("you need solve his problem and he let us continue \n");
-    std::cout << BOLDRED << "insert 1.5 hour in sec" << RESET << std::endl;
+    std::cout << BOLDRED << "How much seconds in 1.5 hour?" << RESET << std::endl;
     int count = 3;
     NumberWithUnits b{1.5, "hour"};
     NumberWithUnits a{3, "sec"};  
@@ -75,6 +75,33 @@ int i_equal_8(){
         // cout<<a<<endl;
         count--;
         }
+
+    std::cout << BOLDRED << "this basterd wants money!!" << RESET << std::endl;
+    sleep(1);
+    std::cout << BOLDRED << "he wants 50 USD in ILS!!! " << RESET << std::endl;
+    printf("you need put the exact sum! \n");
+    count = 3;
+    NumberWithUnits c{50, "USD"};
+    NumberWithUnits d{3, "ILS"};  
+    string s4, s5;
+    while(c!=d){
+        if(count == 0){
+            std::cout << BOLDRED << "everyone dead" << RESET << std::endl;
+            return 1;
+        }
+        cout<<"you have "<<count<<" tries"<<endl;
+        cout<<"insert num"<<endl;
+        cin>>s4;
+        cout<<"insert kind"<<endl;
+        cin>>s5;
+        string s6 = s4+"["+s5+"]";
+        // cout<<s2<<endl;
+        istringstream sample_input{s6};
+        sample_input>>d; 
+        // cout<<a<<endl;
+        count--;
+        }
+
     return 0;
 }
 

@@ -50,9 +50,34 @@ int i_equal_9(){
     }
     return 0;
 }
-void i_equal_8(){
-    
+int i_equal_8(){
+    std::cout << BOLDRED << "Oh NO Darth Vader wants to destroy our ship !!!!" << RESET << std::endl;
+    printf("you need solve his problem and he let us continue \n");
+    std::cout << BOLDRED << "insert 1.5 hour in sec" << RESET << std::endl;
+    int count = 3;
+    NumberWithUnits b{1.5, "hour"};
+    NumberWithUnits a{3, "sec"};  
+    string s, s1;
+    while(b!=a){
+        if(count == 0){
+            std::cout << BOLDRED << "everyone dead" << RESET << std::endl;
+            return 1;
+        }
+        cout<<"you have "<<count<<" tries"<<endl;
+        cout<<"insert num"<<endl;
+        cin>>s;
+        cout<<"insert kind"<<endl;
+        cin>>s1;
+        string s2 = s+"["+s1+"]";
+        // cout<<s2<<endl;
+        istringstream sample_input{s2};
+        sample_input>>a; 
+        // cout<<a<<endl;
+        count--;
+        }
+    return 0;
 }
+
 int i_equal_7(){
     std::cout << BOLDRED << "Danger!!!!!! we need to set the timer of our oxigen !!!!" << RESET << std::endl;
     printf("you need to write 1 hour in sec to stay alive!!\n");
@@ -108,8 +133,8 @@ int i_equal_5(){
 
 int i_equal_3(){
 
-    printf("quick! we are 3 meter from land!\n");
-    printf("you need to write 3 meter in cm because the engineer of the spaceship is britan..... \n");
+    std::cout << BOLDRED << "quick! we are 3 meter from land!" << RESET << std::endl;
+    printf("you need to write 3 meter in cm \n");
     int count = 3;
     NumberWithUnits b{3, "m"};
     NumberWithUnits a{3, "cm"};  
@@ -165,6 +190,12 @@ void start_game(){
 
         if(i == 9){
             if(i_equal_9()==1){
+                return;
+            }
+        }
+
+        if(i == 8){
+            if(i_equal_8()==1){
                 return;
             }
         }
@@ -232,7 +263,7 @@ int main() {
     sleep(2);
     cout<<""<<endl;
 
-    cout<<"hello and wellcome abbord!"<< endl;
+    cout<<BOLDGREEN<<"hello and wellcome abbord!"<< RESET << endl;
     cout<<""<<endl;
     cout<<"are you ready? we going to land on the moon!"<< endl;
     cout<<""<<endl;

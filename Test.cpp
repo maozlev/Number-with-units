@@ -20,7 +20,8 @@ TEST_CASE("Good NumberWithUnits code") {
     NumberWithUnits a(2, "km");
     NumberWithUnits b(2500, "m");
     NumberWithUnits c(2, "cm");
-    
+    NumberWithUnits d(2, "kg");
+    CHECK_THROWS(c+d);    
     CHECK(a == a);
     CHECK(a != b);
     CHECK(a == c*100000);

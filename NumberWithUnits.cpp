@@ -107,20 +107,6 @@ namespace ariel{
         return NumberWithUnits (a.unit - convert, a.des);   
     }
 
-    NumberWithUnits operator+(const NumberWithUnits& a, double n){
-        if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
-        }
-        return NumberWithUnits (a.unit + n, a.des);   
-    }
-
-    NumberWithUnits operator-(const NumberWithUnits& a, double n){
-        if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
-        }
-        return NumberWithUnits (a.unit - n, a.des);   
-    }
-
     NumberWithUnits operator+=(NumberWithUnits& a, const NumberWithUnits& b){
         if(!(NumberWithUnits::have_connection(a,b))){
             throw("Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]");

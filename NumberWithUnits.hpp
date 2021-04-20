@@ -44,8 +44,8 @@ namespace ariel{
 
             //operations on 1 objects**********************************************
 
-            friend NumberWithUnits operator-(const NumberWithUnits& a, double n);
-            friend NumberWithUnits operator+(const NumberWithUnits& a, double n);
+            // friend NumberWithUnits operator-(const NumberWithUnits& a, double n);
+            // friend NumberWithUnits operator+(const NumberWithUnits& a, double n);
 
             friend NumberWithUnits operator++(NumberWithUnits& a);
             friend NumberWithUnits operator++(NumberWithUnits& a, int);
@@ -74,13 +74,6 @@ namespace ariel{
             friend std::istream& operator>> (std::istream& is,  NumberWithUnits& a);
 
             // added functions
-
-            double get_unit(){
-                return unit;
-            }
-            std::string get_des(){
-                return des;
-            }
 
             static bool is_exist(const NumberWithUnits& a);
             static bool have_connection(const NumberWithUnits& a, const NumberWithUnits& b);

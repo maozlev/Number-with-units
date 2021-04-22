@@ -35,19 +35,13 @@ using namespace std;
 using namespace ariel;
 
 static string answer;
+static int point=0;
 
-int level1(){
+int level1(string level){
     int grade1 = 0;
-    string level = "LEVEL 1";
+    level = "LEVEL"+ level;
     unsigned int microseconds=105000;
     sleep(1);
-    cout<<endl;
-    
-    for(unsigned int i = 0 ;i < 20; i++){
-        cout<<RED<<level;
-        fflush(stdout);
-        usleep(microseconds);
-    }
     cout<<endl;
 
     cout<<"answer the questions as fastest as you can!"<<endl;
@@ -75,7 +69,7 @@ int level1(){
         sleep(1);
         cout<<GREEN<<"prays for poor Deni....."<<endl;
         sleep(1);
-        cout<<GREEN<<"You have 1 point!"<<endl;
+        cout<<GREEN<<"You have "<<++point<<" point!"<<endl;
     }else{
         cout<<RED<<"his tall is 206 cm dude..."<<endl;
         cout<<RED<<"no point for you"<<endl;
@@ -86,7 +80,7 @@ int level1(){
     cout<<WHITE<<q;
     cout<<endl;
     level = "  *****TRUE/FALSE*****  ";
-    
+
     sleep(1);
     cout<<endl;
     microseconds+=5555;
@@ -96,30 +90,76 @@ int level1(){
         usleep(microseconds);
     }
     cout<<endl;
-    // NumberWithUnits tt = NumberWithUnits{206,"cm"};
-    // cout<<endl;
-    // cout << BOLDBLUE  << "Deni Avdija is 2.06 m tall" << endl;
-    // sleep(1);
-    // cout << BOLDBLUE  << "how much in cm???" << endl;
-    // cout<<endl;
-    // cin>>answer;
-    // istringstream iss{answer+" [ cm ]"};
-    // NumberWithUnits d1{20,"m"};
-    // iss>>d1;
-    // if(d == d1){
-    //     sleep(1);
-    //     cout<<GREEN<<"good job!"<<endl;
-    //     sleep(1);
-    //     cout<<GREEN<<"prays for poor Deni....."<<endl;
-    //     sleep(1);
-    //     cout<<GREEN<<"You have 1 point!"<<endl;
-    // }else{
-    //     cout<<RED<<"his tall is 206 cm dude..."<<endl;
-    //     cout<<RED<<"no point for you"<<endl;
-    // }
+    NumberWithUnits tt = NumberWithUnits{1,"hour"};
+    cout << BOLDBLUE  << "true / false: " << endl;
+    sleep(1);
+    cout << BOLDBLUE  << "3600 seconds equals to hour?? " << endl;
+    cout<<endl;
+    cin>>answer;
+    bool flag = false;;
+    if((tt == NumberWithUnits(3600, "sec"))){
+        sleep(1);
+        cout<<GREEN<<"good job!"<<endl;
+        sleep(1);
+        cout<<GREEN<<"tick tack the clocks tiking..."<<endl;
+        sleep(1);
+        cout<<GREEN<<"You have "<<++point<<" points!"<<endl;
+    }else{
+        cout<<RED<<"do the math..."<<endl;
+        sleep(1);
+        cout<<RED<<"no point for you"<<endl;
+        sleep(1);
+        cout<<RED<<"current points: "<<point<<endl;
+        sleep(1);
+    }
 
-    
-    
+    q = "QUESTION 3";
+    sleep(1);
+    cout<<endl;
+    cout<<WHITE<<q;
+    cout<<endl;
+    level = "  *****TRAVEL TIME*****  ";
+
+    sleep(1);
+    cout<<endl;
+    for(unsigned int i = 0 ;i < 7; i++){
+        cout<<YELLOW<<level;
+        fflush(stdout);
+        usleep(microseconds);
+    }
+    cout<<endl;
+    NumberWithUnits USD1 = NumberWithUnits{1,"USD"};
+    NumberWithUnits EURO1 = NumberWithUnits{1,"EUR"};
+    NumberWithUnits ILS1 = NumberWithUnits{1,"ILS"};
+    cout << BOLDBLUE  << "corona virus over and we going to the USA" << endl;
+    sleep(2);
+    cout << BOLDRED  << "But, there is a catch" << endl;
+    sleep(2);
+    cout << BOLDBLUE  << "our flight from paris so we need to know how much USD equals to 1 EURO" << endl;
+    sleep(4);
+    cout<<YELLOW<<"table of units: "<<endl;
+    cout<<endl;
+    sleep(3);
+    NumberWithUnits::print_table();
+    cout<<endl;
+    cin>>answer;
+    double c = std::stod(answer);
+    NumberWithUnits t{c,"EUR"};
+    if(t == USD1){
+        sleep(1);
+        cout<<GREEN<<"good job!"<<endl;
+        sleep(1);
+        cout<<GREEN<<"Corona isnt over but its good to know things like that..."<<endl;
+        sleep(1);
+        cout<<GREEN<<"You have "<<++point<<" points!"<<endl;
+    }else{
+        cout<<RED<<"no flight for you..."<<endl;
+        sleep(1);
+        cout<<RED<<"no point for you"<<endl;
+        sleep(1);
+        cout<<RED<<"current points: "<<point<<endl;
+        sleep(1);
+    }
 
     time_t end = time(0);
     time_t grade = end-start;
@@ -138,7 +178,7 @@ int level1(){
     else{
         cout<<BLUE<<"Grade 60"<<endl;
         cout<<"try again!!"<<endl;
-        cout<<"never back down"<<endl;
+        cout<<"never give up"<<endl;
         return 0;
     }
     
@@ -182,15 +222,7 @@ int main(){
         usleep(microseconds);
     }
     cout << "->Done" <<endl;
-    if(answer == "1" ){
-        level1();
-    }
-    if(answer == "2" ){
-    }
-    if(answer == "3" ){
-    }
-    
-
+    level1(answer);
 
 return 0;
 }

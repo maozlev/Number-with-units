@@ -223,43 +223,42 @@ namespace ariel{
 
     istream& operator>> (istream& is, NumberWithUnits& a) {
 
-        string unit, des, real_des, sum, stam;
-
-            is>>sum;
-
-            unsigned int i =0;
-
-            while(sum.at(i)!='['){
-                if(sum.at(i) != ' ' && sum.at(i) != '\t'){
-                    unit+= sum.at(i);
-                    i++;
-                }
-            }
-
-            while(sum.at(i)!=']'){
-                if(sum.at(i) != ' ' && sum.at(i) != '\t'){
-                    des+= sum.at(i);
-                    i++;
-                }
-            }
-
-            
-            unsigned int max = des.size();
-
-           for ( i = 1; i < max; i++){
-               real_des += des.at(i);
-           }
-           
-            if(!NumberWithUnits::is_exist(real_des)){
-                throw invalid_argument{"Units do not match - ["+real_des+"]"};
-            }
-
-        a.des = real_des;
-        a.unit = stod(unit);
+        if(!NumberWithUnits::is_exist(a.des)){
+            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+        }
         
+        char c = 0;
+        double t = 0;
+        string st;
+        
+        is >> t; //unit
+        is >> skipws >> c; // des
+        if(c != '['){
+            is.setstate(ios::failbit); // should start with [
+        }
+
+        getline(is,st,']'); // get until ]
+        // cout<<st.c_str()<<endl;
+        // cout<<st.find_first_not_of(' ')<<endl; // how much spaces I have
+        string str2 = st.c_str() + st.find_first_not_of(' '); 
+        // cout<<str2<<endl;
+        // cout<<endl;
+        unsigned int space_first_location = str2.find_first_of(' ');
+        // cout<<space_first_location<<endl;
+        // cout<<str2.size()<<endl;
+        if(str2.size() > space_first_location && space_first_location > 0){
+            str2.resize(space_first_location); // need more space (in memory)
+        }
+        if(!NumberWithUnits::is_exist(str2)){
+            throw invalid_argument{"Units do not match - ["+str2+"]"};
+        }
+        a.unit = t;
+        a.des = str2; // fixed description
         return is;
-        
     }
+    
+
+
     
     ostream& operator<< (ostream& os, const NumberWithUnits& a) {
         if(!NumberWithUnits::is_exist(a.des)){

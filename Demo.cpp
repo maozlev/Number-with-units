@@ -264,7 +264,7 @@ int main() {
     cout<<GREEN <<"*         *     *         *       *               "<< RESET << endl;
     cout<<GREEN <<"*         *     *         *       *               "<< RESET << endl;
     cout<<GREEN <<"*******   *******   *******       *               "<< RESET << endl;
-    sleep(2);
+    // sleep(2);
     cout<<""<<endl;
     cout<<YELLOW<<"               ***         *       *               "<< RESET << endl;
     cout<<YELLOW<<"                *          **      *               "<< RESET << endl;
@@ -275,7 +275,7 @@ int main() {
     cout<<YELLOW<<"                *          *     * *               "<< RESET << endl;
     cout<<YELLOW<<"                *          *      **               "<< RESET << endl;
     cout<<YELLOW<<"               ***         *       *               "<< RESET << endl;
-    sleep(2);
+    // sleep(2);
     cout<<""<<endl;
     cout<<CYAN<<"*******   *******     * *     *******   *******   "<< RESET << endl;
     cout<<CYAN<<"*         *     *    *   *    *         *         "<< RESET << endl;
@@ -286,7 +286,7 @@ int main() {
     cout<<CYAN<<"      *   *         *     *   *         *         "<< RESET << endl;
     cout<<CYAN<<"      *   *         *     *   *         *         "<< RESET << endl;
     cout<<CYAN<<"*******   *         *     *   *******   *******   "<< RESET << endl;
-    sleep(2);
+    // sleep(2);
     cout<<""<<endl;
 
     cout<<BOLDGREEN<<"hello and wellcome abbord!"<< RESET << endl;
@@ -309,7 +309,7 @@ int main() {
     cout<<"|                  *   *        |"<< endl;
     cout<<"|     * *      ->*<-    *       |"<< endl;
     cout<<"_________________________________"<< endl;
-    sleep(5);
+    // sleep(5);
     cout<<""<<endl;
     cout<<"we need you as a capitan please be our commander!"<< endl;
     cout<<"please say yes"<< endl;
@@ -319,9 +319,9 @@ int main() {
         cin>>s;
     }
     cout<<"I have to warn you - the engineer who built this spaceship is British. Their units are very strange I'll explain:\n"<< endl;
-    sleep(2);
+    // sleep(2);
     cout<<"there is a table for all usefull units:"<< endl;
-    sleep(2);
+    // sleep(2);
     NumberWithUnits::print_table();
     cout<<"did you get it?"<< endl;
     string s2;

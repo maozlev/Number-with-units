@@ -16,12 +16,12 @@ namespace ariel{
         public:
 
             NumberWithUnits(double a, std::string s){
+                if(!is_exist(s)){
+                    throw("erorr");
+                }
                 this->unit = a;
                 this->des = s; 
-            }
-            NumberWithUnits(){
-                this->unit = 0;
-                this->des = ""; 
+                
             }
 
             ~NumberWithUnits(){}
@@ -30,35 +30,31 @@ namespace ariel{
 
             //Unary operators******************************************************
 
-            friend NumberWithUnits operator-(const NumberWithUnits& a);
-            friend NumberWithUnits operator+(const NumberWithUnits& a);
+            NumberWithUnits operator-();
+            NumberWithUnits operator+();
             
             //operations on 2 objects**********************************************  
             
-            friend NumberWithUnits operator-(const NumberWithUnits& a, const NumberWithUnits& b);
-            friend NumberWithUnits operator+(const NumberWithUnits& a, const NumberWithUnits& b);
+            NumberWithUnits operator-(const NumberWithUnits& a);
+            NumberWithUnits operator+(const NumberWithUnits& a);
             
-            friend NumberWithUnits operator-=(NumberWithUnits& a, const NumberWithUnits& b);
-            friend NumberWithUnits operator+=(NumberWithUnits& a, const NumberWithUnits& b);
+            NumberWithUnits& operator-=(const NumberWithUnits& a);
+            NumberWithUnits& operator+=(const NumberWithUnits& a);
 
 
             //operations on 1 objects**********************************************
 
-            // friend NumberWithUnits operator-(const NumberWithUnits& a, double n);
-            // friend NumberWithUnits operator+(const NumberWithUnits& a, double n);
+            NumberWithUnits& operator++();
+            NumberWithUnits& operator--();
+            NumberWithUnits operator++(int);
+            NumberWithUnits operator--(int);
 
-            friend NumberWithUnits operator++(NumberWithUnits& a);
-            friend NumberWithUnits operator++(NumberWithUnits& a, int);
+            NumberWithUnits& operator*=(double n);
 
-            friend NumberWithUnits operator--(NumberWithUnits& a);
-            friend NumberWithUnits operator--(NumberWithUnits& a, int);
+            friend NumberWithUnits operator*(const NumberWithUnits& a, const double& n);
+            friend NumberWithUnits operator*(const double& n, const NumberWithUnits& a);
 
-            friend NumberWithUnits operator*(NumberWithUnits& a, double n);
-            friend NumberWithUnits operator*(double n, NumberWithUnits& a);
-
-            friend NumberWithUnits operator*=(NumberWithUnits& a, double n);
-            friend NumberWithUnits operator*=(double n, NumberWithUnits& a);
-
+            
             // Comparisons on 2 objects*********************************************
 
             friend bool operator>(const NumberWithUnits& a, const NumberWithUnits& b);
@@ -75,11 +71,10 @@ namespace ariel{
 
             // added functions
 
-            static bool is_exist(const NumberWithUnits& a);
-            static bool have_connection(const NumberWithUnits& a, const NumberWithUnits& b);
+            static bool is_exist(const std::string &a);
+            static bool have_connection(const std::string &a, const std::string &b);
             static double convertor(const NumberWithUnits& a, const NumberWithUnits& b);
             static void print_table();
-
     };
 };
 

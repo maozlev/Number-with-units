@@ -3,13 +3,22 @@
 #include <sstream>
 #include <stdexcept>
 #include <map>
+#include<string>
+
+
+#include <algorithm> 
+#include <queue>
+#include <utility>
 
 #include "NumberWithUnits.hpp"
+
 using namespace std;
 
 namespace ariel{
 
     static map <string , map<string , double>> compares;
+
+        
     
     // from stackoverflow
     void NumberWithUnits::read_units(std::ifstream& units_file){
@@ -31,26 +40,25 @@ namespace ariel{
         }
     }
 
-    bool NumberWithUnits::is_exist(const NumberWithUnits& a){
+    bool NumberWithUnits::is_exist(const std::string &a){
         bool flag = false;
-        for (auto& t:compares[a.des]){
-                if(a.des == t.first){
+        for (auto& t:compares[a]){
+                if(a.compare(t.first) !=0 ){
                     flag = true;
                 }
         }
         return flag;
     }
 
-    bool NumberWithUnits::have_connection(const NumberWithUnits& a, const NumberWithUnits& b){
+    bool NumberWithUnits::have_connection(const std::string &a, const std::string &b){
         bool flag = false;
-        for (auto t:compares[a.des]){
-                if(b.des == t.first){
+        for (auto t:compares[a]){
+                if(b == t.first){
                     flag = true;
                 }
         }
-        for (auto t:compares[b.des]){
-            // cout<<t.first<<endl;
-                if(a.des == t.first){
+        for (auto t:compares[b]){
+                if(a == t.first){
                     flag = true;
                 }
         }
@@ -61,130 +69,124 @@ namespace ariel{
     } 
 
     bool operator==(const NumberWithUnits& a, const NumberWithUnits& b) {
-        // cout<<(NumberWithUnits::have_connection(a,b))<<endl;
-        if(!(NumberWithUnits::have_connection(a,b))){
+        double epsilon = 0.0001; 
+        if(!(NumberWithUnits::have_connection(a.des,b.des))){
             throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
             return false;
         }
         double convert = NumberWithUnits::convertor(a,b);
         // cout<<(a.unit - convert)<<endl;
-        return ((a.unit - convert) < 0.0001 && (a.unit - convert)> (-0.0001));   
+        return ((a.unit - convert) < epsilon && (a.unit - convert)> (-epsilon));   
     }
 
     bool operator!=(const NumberWithUnits& a, const NumberWithUnits& b) {
-        // cout<<(!(a==b))<<endl;
-        // cout<<((a==b))<<endl;
         return (!(a==b));
     }
 
-    NumberWithUnits operator-(const NumberWithUnits& a){
-        if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+    NumberWithUnits NumberWithUnits::operator-(){
+        if(!NumberWithUnits::is_exist(this->des)){
+            throw invalid_argument{"Units do not match - ["+this->des+"]"};
         }
-        return NumberWithUnits (-a.unit, a.des);
-    }
-    NumberWithUnits operator+(const NumberWithUnits& a){
-        if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
-        }
-        return NumberWithUnits (a.unit, a.des);
+        NumberWithUnits t(-this->unit, this->des);
+        return t;
     }
 
-    NumberWithUnits operator+(const NumberWithUnits& a, const NumberWithUnits& b){
-        if(!(NumberWithUnits::have_connection(a,b))){
-            throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
+    NumberWithUnits NumberWithUnits::operator+(){
+        if(!NumberWithUnits::is_exist(this->des)){
+            throw invalid_argument{"Units do not match - ["+this->des+"]"};
+        }
+        NumberWithUnits t(this->unit, this->des);
+        return t;
+    }
+
+    NumberWithUnits NumberWithUnits::operator+(const NumberWithUnits& a){
+        if(!(NumberWithUnits::have_connection(this->des ,a.des))){
+            throw invalid_argument{"Units do not match - ["+this->des+"] cannot be converted to ["+a.des+"]"};
             }
-        double convert = NumberWithUnits::convertor(a,b);
+        NumberWithUnits tmp(this->unit, this->des);
+        double convert = NumberWithUnits::convertor(tmp,a);
 
-        return NumberWithUnits (a.unit + convert, a.des);   
+        return NumberWithUnits (this->unit + convert, this->des);   
     }
 
-    NumberWithUnits operator-(const NumberWithUnits& a, const NumberWithUnits& b){
-        if(!(NumberWithUnits::have_connection(a,b))){
-            throw("Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]");
-        }
-        double convert = NumberWithUnits::convertor(a,b);
-        return NumberWithUnits (a.unit - convert, a.des);   
+    NumberWithUnits NumberWithUnits::operator-(const NumberWithUnits& a){
+        if(!(NumberWithUnits::have_connection(this->des ,a.des))){
+            throw invalid_argument{"Units do not match - ["+this->des+"] cannot be converted to ["+a.des+"]"};
+            }
+        NumberWithUnits tmp(this->unit, this->des);
+        double convert = NumberWithUnits::convertor(tmp,a);
+
+        return NumberWithUnits (this->unit - convert, this->des);   
     }
 
-    NumberWithUnits operator+=(NumberWithUnits& a, const NumberWithUnits& b){
-        if(!(NumberWithUnits::have_connection(a,b))){
-            throw("Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]");
+    NumberWithUnits& NumberWithUnits::operator+=(const NumberWithUnits& a){
+        if(!(NumberWithUnits::have_connection(this->des, a.des))){
+            throw("Units do not match - ["+this->des+"] cannot be converted to ["+a.des+"]");
         }
-        double convert = NumberWithUnits::convertor(a,b);
-        a.unit = (a.unit + convert);
-        return a;
+        NumberWithUnits tmp1(this->unit, this->des);
+        double convert = NumberWithUnits::convertor(tmp1,a);
+        this->unit += convert;
+        return *this;
     }
 
-    NumberWithUnits operator-=(NumberWithUnits& a, const NumberWithUnits& b){
-        if(!(NumberWithUnits::have_connection(a,b))){
-            throw("Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]");
+    NumberWithUnits& NumberWithUnits::operator-=(const NumberWithUnits& a){
+        if(!(NumberWithUnits::have_connection(this->des, a.des))){
+            throw("Units do not match - ["+this->des+"] cannot be converted to ["+a.des+"]");
         }
-        double convert = NumberWithUnits::convertor(a,b);
-        a.unit = (a.unit - convert);
-        return a;
+        NumberWithUnits tmp1(this->unit, this->des);
+        double convert = NumberWithUnits::convertor(tmp1,a);
+        this->unit -= convert;
+        return *this;
     }
 
-    NumberWithUnits operator++(NumberWithUnits& a){
-        if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+    NumberWithUnits& NumberWithUnits::operator++() {
+        if(!NumberWithUnits::is_exist(this->des)){
+            throw invalid_argument{"Units do not match - ["+this->des+"]"};
         }
-        return NumberWithUnits (++a.unit, a.des);
+        ++this->unit;
+        return *this;
     }
 
-    NumberWithUnits operator++(NumberWithUnits& a, int){
-        if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
+    NumberWithUnits NumberWithUnits::operator++(int) { 
+        if(!NumberWithUnits::is_exist(this->des)){
+            throw invalid_argument{"Units do not match - ["+this->des+"]"};
         }
-        return NumberWithUnits (a.unit++, a.des);
+        NumberWithUnits t((this->unit)++, this->des);
+        return t;
+    }
+
+    NumberWithUnits& NumberWithUnits::operator--() {
+        if(!NumberWithUnits::is_exist(this->des)){
+            throw invalid_argument{"Units do not match - ["+this->des+"]"};
+        }
+        --this->unit;
+        return *this;
+    }
+
+    NumberWithUnits NumberWithUnits::operator--(int) { 
+        if(!NumberWithUnits::is_exist(this->des)){
+            throw invalid_argument{"Units do not match - ["+this->des+"]"};
+        }
+        NumberWithUnits t((this->unit)--, this->des);
+        return t;
     }
     
-    NumberWithUnits operator--(NumberWithUnits& a){
-        if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
-        }
-         return NumberWithUnits (--a.unit, a.des);
+    NumberWithUnits operator*(const NumberWithUnits& a,const double& n){
+        NumberWithUnits n2(a.unit*n, a.des);
+        return n2;
     }
 
-    NumberWithUnits operator--(NumberWithUnits& a, int){
-        if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
-        }
-         return NumberWithUnits (a.unit--, a.des);
-    }
+    NumberWithUnits operator*(const double& n,const NumberWithUnits& a){
+        return a*n;  
+    }   
 
-    NumberWithUnits operator*(NumberWithUnits& a, double n){
-        if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
-        }
-        return NumberWithUnits (a.unit * n, a.des);
-    }
-
-    NumberWithUnits operator*(double n, NumberWithUnits& a){
-        if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
-        }
-        return NumberWithUnits (n * a.unit, a.des);
-    }
-
-    NumberWithUnits operator*=(NumberWithUnits& a, double n){
-        if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
-        }
-        a.unit *= n;
-        return a;
-    }
-
-    NumberWithUnits operator*=(double n, NumberWithUnits& a){
-        if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
-        }
-        a.unit *= n;
-        return a;
+    NumberWithUnits& NumberWithUnits::operator*=(double n) {
+        this->unit *= n;
+        return *this;
     }
 
     bool operator>(const NumberWithUnits& a, const NumberWithUnits& b){
-        if(!(NumberWithUnits::have_connection(a,b))){
+        if(!(NumberWithUnits::have_connection(a.des,b.des))){
             throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
             return false;
         }
@@ -193,7 +195,7 @@ namespace ariel{
     }
 
     bool operator>=(const NumberWithUnits& a, const NumberWithUnits& b){
-        if(!(NumberWithUnits::have_connection(a,b))){
+        if(!(NumberWithUnits::have_connection(a.des,b.des))){
             throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
             return false;
         }
@@ -202,7 +204,7 @@ namespace ariel{
     }
 
     bool operator<(const NumberWithUnits& a, const NumberWithUnits& b){
-        if(!(NumberWithUnits::have_connection(a,b))){
+        if(!(NumberWithUnits::have_connection(a.des,b.des))){
             throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
             return false;
         }
@@ -211,7 +213,7 @@ namespace ariel{
     }    
     
     bool operator<=(const NumberWithUnits& a, const NumberWithUnits& b){
-        if(!(NumberWithUnits::have_connection(a,b))){
+        if(!(NumberWithUnits::have_connection(a.des,b.des))){
             throw invalid_argument{"Units do not match - ["+b.des+"] cannot be converted to ["+a.des+"]"};
             return false;
         }
@@ -219,18 +221,48 @@ namespace ariel{
         return (a.unit-convert<=0);
     }
 
-     istream& operator>>(istream& is, NumberWithUnits& a){
-         if(!NumberWithUnits::is_exist(a)){
-            throw invalid_argument{"Units do not match - ["+a.des+"]"};
-        }
-        string s;
-        is >> a.unit >> s >> a.des;
-        return is;
-    }
+    istream& operator>> (istream& is, NumberWithUnits& a) {
 
+        string unit, des, real_des, sum, stam;
+
+            is>>sum;
+
+            unsigned int i =0;
+
+            while(sum.at(i)!='['){
+                if(sum.at(i) != ' ' && sum.at(i) != '\t'){
+                    unit+= sum.at(i);
+                    i++;
+                }
+            }
+
+            while(sum.at(i)!=']'){
+                if(sum.at(i) != ' ' && sum.at(i) != '\t'){
+                    des+= sum.at(i);
+                    i++;
+                }
+            }
+
+            
+            unsigned int max = des.size();
+
+           for ( i = 1; i < max; i++){
+               real_des += des.at(i);
+           }
+           
+            if(!NumberWithUnits::is_exist(real_des)){
+                throw invalid_argument{"Units do not match - ["+real_des+"]"};
+            }
+
+        a.des = real_des;
+        a.unit = stod(unit);
+        
+        return is;
+        
+    }
     
     ostream& operator<< (ostream& os, const NumberWithUnits& a) {
-        if(!NumberWithUnits::is_exist(a)){
+        if(!NumberWithUnits::is_exist(a.des)){
             throw invalid_argument{"Units do not match - ["+a.des+"]"};
         }
         return (os << a.unit << '['<< a.des << ']');

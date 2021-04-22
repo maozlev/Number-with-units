@@ -41,4 +41,4 @@ clean:
 	rm -f *.o demo Demo
 	rm -f *.o test
 	rm -f StudentTest*.cpp
-	rm -f *.txt
+	rm -f filename.txt filename2.txt myTestFile.txt

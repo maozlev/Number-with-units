@@ -17,7 +17,7 @@ namespace ariel{
 
             NumberWithUnits(double a, std::string s){
                 if(!is_exist(s)){
-                    throw("erorr");
+                    throw("erorr there is no unit like this at the txt file");
                 }
                 this->unit = a;
                 this->des = s; 

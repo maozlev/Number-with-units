@@ -8,3 +8,4 @@
 1 min = 60 sec
 1 EUR = 4.5 ILS
 1 USD = 3.33 ILS 
+1 POUND = 6.4 ILS 

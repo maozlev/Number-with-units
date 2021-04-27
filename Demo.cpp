@@ -329,35 +329,36 @@ int main(){
     ifstream units_file{"units_for_demo.txt"};
     NumberWithUnits::read_units(units_file);
     
-    cout<<endl;
-    cout << BOLDYELLOW << "Hello!! and Welcome to the Show...................." << endl;
-    sleep(1);
-    cout<<endl;
-    cout << BOLDRED << "Convert me!!!" << endl;
-    sleep(3);
-    while(true){
-        cout<<endl;
-        cout << BOLDBLUE  << "Select a level between 1-3" << endl;
-        cout<<endl;
-        cin>>answer;
-        if(answer == "1" || answer == "2" || answer == "3"){
-            break;
-        }
-    }
-    unsigned int microseconds=105000;
-    cout<<BOLDBLUE <<"level selected = "+answer<<endl;
-    sleep(1);
-    cout<<endl;
-    cout <<YELLOW<< "Let the game begin! " << endl << "Loading ";
-    cout<<endl;
-    for(unsigned int i = 0 ;i < 10; i++){
-        cout << "------" ;
-        fflush(stdout);
-        usleep(microseconds);
-    }
-    cout << "->Done" <<endl;
-    level1(answer);
+    // cout<<endl;
+    // cout << BOLDYELLOW << "Hello!! and Welcome to the Show...................." << endl;
+    // sleep(1);
+    // cout<<endl;
+    // cout << BOLDRED << "Convert me!!!" << endl;
+    // sleep(3);
+    // while(true){
+    //     cout<<endl;
+    //     cout << BOLDBLUE  << "Select a level between 1-3" << endl;
+    //     cout<<endl;
+    //     cin>>answer;
+    //     if(answer == "1" || answer == "2" || answer == "3"){
+    //         break;
+    //     }
+    // }
+    // unsigned int microseconds=105000;
+    // cout<<BOLDBLUE <<"level selected = "+answer<<endl;
+    // sleep(1);
+    // cout<<endl;
+    // cout <<YELLOW<< "Let the game begin! " << endl << "Loading ";
+    // cout<<endl;
+    // for(unsigned int i = 0 ;i < 10; i++){
+    //     cout << "------" ;
+    //     fflush(stdout);
+    //     usleep(microseconds);
+    // }
+    // cout << "->Done" <<endl;
+    // level1(answer);
 
-return 0;
+    NumberWithUnits::print_table();
+    return 0;
 }
 
